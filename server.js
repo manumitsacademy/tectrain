@@ -9,11 +9,7 @@ app.use(express.json());
 var User = require("./User")
 // respond with "hello world" when a GET request is made to the homepage
 app.get('/', function (req, res) {
-       User.find({}, (err, user) => {        
-        console.log(err)
-        console.log(user)
-        res.send(user)
-        })
+      res.send("Helloo")
 })
 app.post('/', function (req, res) {
     console.log(req.body)
