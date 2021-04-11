@@ -20,4 +20,4 @@ app.post('/', function (req, res) {
         res.send("OK")
         });
 })
-app.listen(3400,()=>{console.log("running on 3400")})
+app.listen(process.env.PORT,()=>{console.log("running on 3400")})
