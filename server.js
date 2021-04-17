@@ -4,24 +4,20 @@
 
 var express = require('express')
 var app = express();
+var mongoose = require("mongoose")
+app.use(express.static(__dirname+"/public"))
+// const MongoClient = require('mongodb').MongoClient;
+const uri = "mongodb+srv://praveen:praveen123@tectrain.p7fuv.mongodb.net/vlrtech?retryWrites=true&w=majority";
+// const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(uri,{ useNewUrlParser: true, useUnifiedTopology: true });
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'DB connection error!'));
+var userroutes = require("./User/User.routes")
+var technologyroutes = require("./Course/Technology.routes")
+var assignmentroutes = require("./Course/Assignment.routes")
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-var User = require("./User")
-// respond with "hello world" when a GET request is made to the homepage
-app.get('/', function (req, res) {
-       User.find({}, (err, user) => {        
-        console.log(err)
-        console.log(user)
-        res.send(user)
-        })
-})
-app.post('/', function (req, res) {
-    console.log(req.body)
-    var user = new User(req.body) ;
-        user.save(function (err) {
-        if (err) throw err;
-        console.log('User saved!');
-        res.send("OK")
-        });
-})
-app.listen(process.env.PORT,()=>{console.log("running on 3400")})
+app.use("/user",userroutes)
+app.use("/technology",technologyroutes)
+app.use("/assignment",assignmentroutes)
+app.listen(process.env.PORT||3400,()=>{console.log("running on "+process.env.PORT||3400)})
